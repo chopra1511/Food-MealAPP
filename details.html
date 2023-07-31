@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Food</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://kit.fontawesome.com/a12139185a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div class="food-app" id="home">
+        <nav
+        class="navbar navbar-expand-lg sticky-top navbar-light d-flex justify-content-between"
+        >
+        <div>
+            <a class="navbar-brand" href="index.html">
+            <img
+                src="logo.png"
+                alt=""
+                width="110"
+                height="60"
+                class="d-inline-block align-text-top"
+            />
+            </a>
+        </div>
+
+        
+        </nav>
+
+        <div class="intro" id="display">
+            <div class="pic" id="foodPic">
+            </div>
+            <div class="title col-sm-4">
+                <h1 id="food-title"></h1>
+                <button type="button" class="btn btn-dark">
+                    <span style="color: #ff5900;">Order Now</span>
+                    <i class="fa-solid fa-arrow-right-long fa-lg" style="color: #ff5900;"></i>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="menu" style="margin-top: 100px;">
+            <div class="details">
+                <img src="logo.png" alt="logo">
+                <h2>Instructions</h2>
+                <h5 class="col-6" style="font-family: monospace;" id="Instructions"></h5>
+            </div>
+            <div class="container">
+                <div class="row align-items-start" id="fav-add">
+                    
+                </div>
+            </div>
+
+            <div class="intro" id="service">
+                <div class="delivery">
+                    <img src="delivery.png" alt="food-display">
+                </div>
+                <div class="title col-sm-4">
+                    <h1>Best delivery of organic food</h1>
+                    <p style="margin-bottom: 0;">The purpose of lorem ipsum is that it has a more-or-less</p>
+                    <p>normal distribution of letters.</p>
+                    <button type="button" class="btn btn-dark">
+                        <span style="color: #ff5900;">Order Now</span>
+                        <i class="fa-solid fa-arrow-right-long fa-lg" style="color: #ff5900;"></i>
+                    </button>
+                </div>
+            </div>
+            
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script>
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        function fetchMealDetails(mealID) {
+            var apiUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`;
+
+            fetch(apiUrl).then((res) => res.json()).then((data) => data.meals.map((meal) => {
+                var foodPic = document.getElementById('foodPic');
+                foodPic.innerHTML += `<img src="${meal.strMealThumb}" alt="food-display">`;
+
+                var foodtitle = document.getElementById('food-title');
+                foodtitle.textContent = meal.strMeal;
+
+                var Instructions = document.getElementById('Instructions');
+                Instructions.textContent = meal.strInstructions;
+            }))
+                .catch(function (error) {
+                    console.log('Error fetching meal details:', error);
+                });
+        }
+
+        // Get the mealId from the URL parameter
+        var mealID = getParameterByName('mealID');
+        console.log(mealID)
+        if (mealID) {
+            fetchMealDetails(mealID);
+        } else {
+            // Handle error when mealId is not provided in the URL
+            console.log('Meal ID not provided in the URL.');
+        }
+    </script>
+  </body>
+</html>
